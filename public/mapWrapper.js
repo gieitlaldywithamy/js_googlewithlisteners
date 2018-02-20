@@ -6,25 +6,30 @@ const MapWrapper = function (container, coords, zoom) {
   this.markers = []
 }
 
-MapWrapper.prototype.addMarker = function (coords) {
-const marker = new google.maps.Marker({
-    position: coords,
-    map: this.googleMap
+MapWrapper.prototype.addMarker = function (coords, message) {
+  const infoWindowInfo = new google.maps.InfoWindow({
+    content: `${message} You are currently at latitude: ${coords.lat} and longitude ${coords.lng} `
   });
 
-  marker.addListener('click', function(){
-    const infoWindow = new google.maps.InfoWindow({
-      content: `You are currently at latitude: ${coords.lat} and longitude ${coords.lng} `
-    });
-    infoWindow.open(this.googleMap, marker);
+const marker = new google.maps.Marker({
+    position: coords,
+    map: this.googleMap,
+    infoWindow: infoWindowInfo
+  });
+
+  google.maps.event.addListener(marker, 'click', function(){
+    this.infoWindow.open(this.googleMap, this);
   });
   this.markers.push(marker)
 }
 
 MapWrapper.prototype.addClickEvent = function () {
   this.googleMap.addListener('click', function (event) {
-    const position = { lat: event.latLng.lat(), lng: event.latLng.lng() }
-    this.addMarker(position);
+    const position = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng()
+    };
+    this.addMarker(position, "");
   }.bind(this));
 }
 
