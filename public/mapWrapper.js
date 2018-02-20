@@ -11,6 +11,13 @@ const marker = new google.maps.Marker({
     position: coords,
     map: this.googleMap
   });
+
+  marker.addListener('click', function(){
+    const infoWindow = new google.maps.InfoWindow({
+      content: `You are currently at latitude: ${coords.lat} and longitude ${coords.lng} `
+    });
+    infoWindow.open(this.googleMap, marker);
+  });
   this.markers.push(marker)
 }
 
