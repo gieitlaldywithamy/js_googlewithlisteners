@@ -10,6 +10,9 @@ var initialize = function(){
 
   const bounceButton = document.querySelector('#button-bounce-markers')
   bounceButton.addEventListener('click', mainMap.bounceMarkers.bind(mainMap))
+
+  const chicagoButton = document.querySelector('#button-set-chicago');
+  chicagoButton.addEventListener('click', mainMap.goToChicago.bind(mainMap));
 }
 
 window.addEventListener('load', initialize);

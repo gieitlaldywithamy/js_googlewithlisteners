@@ -6,21 +6,25 @@ const MapWrapper = function (container, coords, zoom) {
   this.markers = []
 }
 
+MapWrapper.prototype.goToChicago = function(){
+  const chicago = {lat: 41.8781, lng: -87.6298};
+  this.googleMap.setCenter(chicago);
+  this.addMarker(chicago, "hello");
+}
 MapWrapper.prototype.addMarker = function (coords, message) {
-  const infoWindowInfo = new google.maps.InfoWindow({
+  const marker = new google.maps.Marker({
+    position: coords,
+    map: this.googleMap
+  });
+  const infowindow = new google.maps.InfoWindow({
     content: `${message} You are currently at latitude: ${coords.lat} and longitude ${coords.lng} `
   });
 
-const marker = new google.maps.Marker({
-    position: coords,
-    map: this.googleMap,
-    infoWindow: infoWindowInfo
+  marker.addListener('click', function() {
+    infowindow.open(this.googleMap, marker);
   });
-
-  google.maps.event.addListener(marker, 'click', function(){
-    this.infoWindow.open(this.googleMap, this);
-  });
-  this.markers.push(marker)
+  this.markers.push(marker);
+  return marker;
 }
 
 MapWrapper.prototype.addClickEvent = function () {
@@ -30,6 +34,7 @@ MapWrapper.prototype.addClickEvent = function () {
       lng: event.latLng.lng()
     };
     this.addMarker(position, "");
+
   }.bind(this));
 }
 
@@ -38,3 +43,12 @@ MapWrapper.prototype.bounceMarkers = function () {
     marker.setAnimation(google.maps.Animation.BOUNCE);
   })
 }
+
+// MapWrapper.prototype.addInfoWindow = function (marker) {
+//         marker.addListener('click', function () {
+//             var infoWindow = new google.maps.InfoWindow({
+//                 content: `${message} You are currently at latitude: ${coords.lat} and longitude ${coords.lng} `
+//             })
+//             infoWindow.open(this.googleMap, marker);
+//     });
+// }
