@@ -44,6 +44,19 @@ MapWrapper.prototype.bounceMarkers = function () {
   })
 }
 
+MapWrapper.prototype.findMe = function(){
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      this.addMarker(pos, "You be here");
+      this.googleMap.setCenter(pos);
+
+    }.bind(this));
+  }
+
 // MapWrapper.prototype.addInfoWindow = function (marker) {
 //         marker.addListener('click', function () {
 //             var infoWindow = new google.maps.InfoWindow({

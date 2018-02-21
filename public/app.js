@@ -13,6 +13,9 @@ var initialize = function(){
 
   const chicagoButton = document.querySelector('#button-set-chicago');
   chicagoButton.addEventListener('click', mainMap.goToChicago.bind(mainMap));
+
+  const currentLocationButton = document.querySelector('#button-current-location');
+  currentLocationButton.addEventListener('click', mainMap.findMe.bind(mainMap));
 }
 
 window.addEventListener('load', initialize);
